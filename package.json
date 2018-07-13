@@ -1,0 +1,28 @@
+{
+  "name": "remotedata",
+  "version": "0.1.0",
+  "description": "Simple TypeScript RemoteData implementation",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abraham/remotedata.git"
+  },
+  "keywords": [
+    "typescript",
+    "remotedata"
+  ],
+  "author": "Abraaham Williams <abraham@abrah.am>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abraham/remotedata/issues"
+  },
+  "homepage": "https://github.com/abraham/remotedata#readme",
+  "devDependencies": {
+    "typescript": "^2.9.2"
+  }
+}
