@@ -1,6 +1,6 @@
 {
   "name": "@abraham/remotedata",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Lightweight TypeScript RemoteData implementation",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
