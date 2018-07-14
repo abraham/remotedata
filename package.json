@@ -16,7 +16,9 @@
   "keywords": [
     "typescript",
     "remotedata",
-    "lightweight"
+    "lightweight",
+    "micro",
+    "library"
   ],
   "author": "Abraaham Williams <abraham@abrah.am>",
   "license": "MIT",
