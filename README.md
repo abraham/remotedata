@@ -11,12 +11,14 @@ Usage
 -----
 
 ```ts
-import { Failure, Initialized, Pending, RemoteData, Success } from '@abraham/remotedata';
+import { Failure, fold, Initialized, Pending, RemoteData, Success } from '@abraham/remotedata';
 import { Status } from 'twitter-d';
 import { api } from './api';
 
+type State = RemoteData<Status, number>;
+
 class Thing {
-  private state: RemoteData<Status, number> = new Initialized();
+  private state: State = new Initialized();
 
   constructor() {
     this.getStatus();
@@ -34,16 +36,17 @@ class Thing {
     this.render();
   }
 
-  private async render() {
-    if (this.state instanceof Initialized) {
-      // No work is happening yet
-    } else if (this.state instanceof Pending) {
-      // Work is currently being done
-    } else if (this.state instanceof Success) {
-      // Render the successful result
-    } else if (this.state instanceof Failure) {
-      // Render an error message
-    }
+  private get view(state: State): string {
+    return fold<TemplateResult, Status, number>(
+      () => 'Initialized',
+      () => 'Loading...',
+      (status: Status) => `Got tweet from ${status.screen_name}`,
+      (error: string) => `Error: ${error}`,
+    );
+  }
+
+  private render(): string {
+    return this.view(this.state);
   }
 }
 ```
