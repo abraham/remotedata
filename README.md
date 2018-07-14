@@ -1,11 +1,13 @@
 RemoteData
 ====
-Simple TypeScript RemoteData implementation
+Lightweight TypeScript RemoteData implementation
 
 Install
 ----
 
-    $ npm install @abraham/remotedata
+```sh
+npm install @abraham/remotedata
+```
 
 Usage
 -----
