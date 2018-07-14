@@ -12,10 +12,11 @@ npm install @abraham/remotedata
 Usage
 -----
 
+This is an example class that gets a tweet (type `Status`) from a remote HTTP API.
+
 ```ts
 import { Failure, fold, Initialized, Pending, RemoteData, Success } from '@abraham/remotedata';
 import { Status } from 'twitter-d';
-import { api } from './api';
 
 // Define what the RemoteData Success and Failure types will be.
 type State = RemoteData<Status, number>;
@@ -34,10 +35,11 @@ class Thing {
     // Before starting the remote call set the current state to Pending.
     this.state = new Pending();
     // Perform the actual remote request.
-    const { data, status_code} = await api.getStatus();
-    if (status_code === 200) {
+    const response = await fetch('https://api.example.com/tweet');
+    if (response.ok) {
       // If the request succeeds set the state to Success with the returned data.
-      this.state = new Success(data);
+      const status: Status = await response.json();
+      this.state = new Success(status);
     } else {
       // If the request does not succeed set the state to Failure with the reason.
       this.state = new Failure(status_code);
@@ -48,6 +50,10 @@ class Thing {
 
   private get view(state: State): string {
     // Use `fold` to easily define logic based on the state.
+    // Fold takes four methods as parameters in the order of Initialized, Pending, Success, Failure
+    // and return a method method that takes a `RemoteData` instance as a parameter.
+    // When returned method gets called with a `RemoteData` state, the method matching the current
+    // state gets called.
     return fold<TemplateResult, Status, number>(
       // What to do if the state is Initialized.
       () => 'Initialized',
