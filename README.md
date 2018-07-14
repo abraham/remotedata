@@ -54,7 +54,7 @@ class Thing {
     // and return a method method that takes a `RemoteData` instance as a parameter.
     // When returned method gets called with a `RemoteData` state, the method matching the current
     // state gets called.
-    return fold<TemplateResult, Status, number>(
+    return fold<string, Status, number>(
       // What to do if the state is Initialized.
       () => 'Initialized',
       // What to do if the request is Pending.
