@@ -1,7 +1,7 @@
 {
   "name": "@abraham/remotedata",
   "version": "0.2.0",
-  "description": "Simple TypeScript RemoteData implementation",
+  "description": "Lightweight TypeScript RemoteData implementation",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -15,7 +15,8 @@
   },
   "keywords": [
     "typescript",
-    "remotedata"
+    "remotedata",
+    "lightweight"
   ],
   "author": "Abraaham Williams <abraham@abrah.am>",
   "license": "MIT",
