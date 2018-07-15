@@ -1,5 +1,10 @@
+[![Version Status](https://img.shields.io/npm/v/@abraham/remotedata.svg?style=flat&label=version&colorB=4bc524)](https://npmjs.com/package/@abraham/remotedata)
+[![Build Status](https://img.shields.io/travis/abraham/remotedata.svg?style=flat)](https://travis-ci.org/abraham/remotedata)
+[![Dependency Status](https://david-dm.org/abraham/remotedata.svg?style=flat)](https://david-dm.org/abraham/remotedata)
+
 RemoteData
 ====
+
 Lightweight TypeScript RemoteData implementation
 
 Install
