@@ -5,11 +5,19 @@ export class Initialized {}
 export class Pending {}
 
 export class Success<D> {
-  constructor(public data: D) {}
+  constructor(public data: D) {
+    if (data === null || data === undefined) {
+      fail('Parameter "data" is required');
+    }
+  }
 }
 
 export class Failure<E> {
-  constructor(public error: E) {}
+  constructor(public error: E) {
+    if (error === null || error === undefined) {
+      fail('Parameter "error" is required');
+    }
+  }
 }
 
 export function fold<T, D, E>(
@@ -28,7 +36,7 @@ export function fold<T, D, E>(
     } else if (state instanceof Failure) {
       return failure(state.error);
     } else {
-      return fail('All RemoteData states not handled.');
+      return fail('Unknown RemoteData type used');
     }
   }
 }
