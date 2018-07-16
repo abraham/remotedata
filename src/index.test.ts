@@ -1,4 +1,4 @@
-import { Failure, fold, Initialized, Pending, Success, RemoteData } from './index';
+import { Failure, fold, Initialized, Pending, Success } from './index';
 
 test('Initialized', () => {
   expect(new Initialized()).toBeInstanceOf(Initialized);

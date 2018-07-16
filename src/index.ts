@@ -25,7 +25,7 @@ export function fold<T, D, E>(
   pending: () => T,
   success: (data: D) => T,
   failure: (error: E) => T,
-): (state: RemoteData<E, D>) => T {
+): (state: RemoteData<D, E>) => T {
   return (state: RemoteData<D, E>) => {
     if (state instanceof Initialized) {
       return initialized();
