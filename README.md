@@ -53,7 +53,7 @@ class Thing {
     this.render();
   }
 
-  private get view(state: State): string {
+  private get view(state: State): (state: State) => string {
     // Use `fold` to easily define logic based on the state.
     // Fold takes four methods as parameters in the order of Initialized, Pending, Success, Failure
     // and return a method method that takes a `RemoteData` instance as a parameter.
@@ -73,6 +73,7 @@ class Thing {
 
   private render(): string {
     // Render the current state in your UI.
+    // `this.view` returns a method which is executed with the current state as a parameter.
     const text: string = this.view(this.state);
     // Maybe put it in a template.
   }
