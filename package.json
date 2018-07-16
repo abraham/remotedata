@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/abraham/remotedata#readme",
   "devDependencies": {
-    "@types/jest": "23.1.6",
+    "@types/jest": "23.3.0",
     "jest": "23.4.1",
     "ts-jest": "23.0.0",
     "typescript": "2.9.2"
