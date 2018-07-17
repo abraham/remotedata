@@ -31,5 +31,27 @@
     "jest": "23.4.1",
     "ts-jest": "23.0.0",
     "typescript": "2.9.2"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "renovate": {
+    "extends": [
+      "config:base"
+    ]
   }
 }
