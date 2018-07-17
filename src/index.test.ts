@@ -2,16 +2,19 @@ import { Failure, fold, Initialized, Pending, Success } from './index';
 
 test('Initialized', () => {
   expect(new Initialized()).toBeInstanceOf(Initialized);
+  expect(new Initialized().kind).toEqual('Initialized');
 });
 
 test('Pending', () => {
   expect(new Pending()).toBeInstanceOf(Pending);
+  expect(new Pending().kind).toEqual('Pending');
 });
 
 test('Success', () => {
   const data = { apple: 'sauce' };
   const state = new Success(data);
   expect(state).toBeInstanceOf(Success);
+  expect(state.kind).toEqual('Success');
   expect(state.data).toEqual(data);
 });
 
@@ -23,6 +26,7 @@ test('Failure', () => {
   const error = 500;
   const state = new Failure(error);
   expect(state).toBeInstanceOf(Failure);
+  expect(state.kind).toEqual('Failure');
   expect(state.error).toEqual(error);
 });
 

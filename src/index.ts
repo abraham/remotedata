@@ -1,10 +1,16 @@
 export type RemoteData<D, E> = Initialized | Pending | Success<D> | Failure<E>;
 
-export class Initialized {}
+export class Initialized {
+  private kind = 'Initialized';
+}
 
-export class Pending {}
+export class Pending {
+  private kind = 'Pending';
+}
 
 export class Success<D> {
+  private kind = 'Success';
+
   constructor(public data: D) {
     if (data === null || data === undefined) {
       fail('Parameter "data" is required');
@@ -13,6 +19,8 @@ export class Success<D> {
 }
 
 export class Failure<E> {
+  private kind = 'Failure';
+
   constructor(public error: E) {
     if (error === null || error === undefined) {
       fail('Parameter "error" is required');
