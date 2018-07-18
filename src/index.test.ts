@@ -1,4 +1,13 @@
-import { Failure, fold, Initialized, Pending, Success } from './index';
+import { Failure, fold, Initialized, Kinds, Pending, Success } from './index';
+
+test('Kinds', () => {
+  expect(Kinds).toEqual({
+    'Failure': 'Failure',
+    'Initialized': 'Initialized',
+    'Pending': 'Pending',
+    'Success': 'Success'
+  });
+});
 
 test('Initialized', () => {
   expect(new Initialized()).toBeInstanceOf(Initialized);
