@@ -1,4 +1,4 @@
-export type RemoteData<D, E> = Initialized | Pending | Success<D> | Failure<E>;
+export type RemoteData<E, D> = Initialized | Pending | Failure<E> | Success<D>;
 
 export class Initialized {
   private kind = 'Initialized';
@@ -28,13 +28,13 @@ export class Failure<E> {
   }
 }
 
-export function fold<T, D, E>(
+export function fold<T, E, D>(
   initialized: () => T,
   pending: () => T,
-  success: (data: D) => T,
   failure: (error: E) => T,
-): (state: RemoteData<D, E>) => T {
-  return (state: RemoteData<D, E>) => {
+  success: (data: D) => T,
+): (state: RemoteData<E, D>) => T {
+  return (state: RemoteData<E, D>) => {
     if (state instanceof Initialized) {
       return initialized();
     } else if (state instanceof Pending) {

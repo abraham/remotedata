@@ -42,8 +42,8 @@ test('fold initialized', () => {
   const view = fold(
     initializedMock,
     pendingMock,
-    successMock,
     failureMock,
+    successMock,
   );
 
   view(new Initialized());
@@ -62,8 +62,8 @@ test('fold pending', () => {
   const view = fold(
     initializedMock,
     pendingMock,
-    successMock,
     failureMock,
+    successMock,
   );
 
   view(new Pending());
@@ -82,8 +82,8 @@ test('fold success', () => {
   const view = fold(
     initializedMock,
     pendingMock,
-    successMock,
     failureMock,
+    successMock,
   );
 
   const data = { apple: 'sauce' };
@@ -103,8 +103,8 @@ test('fold failure', () => {
   const view = fold(
     initializedMock,
     pendingMock,
-    successMock,
     failureMock,
+    successMock,
   );
 
   const error = 500;
@@ -125,8 +125,8 @@ test('fold unknown', () => {
   const view = fold(
     initializedMock,
     pendingMock,
-    successMock,
     failureMock,
+    successMock,
   );
 
   expect(() => view(otherMock)).toThrowError('Unknown RemoteData type used');
