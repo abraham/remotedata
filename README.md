@@ -23,8 +23,8 @@ This is an example class that gets a tweet (type `Status`) from a remote HTTP AP
 import { Failure, fold, Initialized, Pending, RemoteData, Success } from '@abraham/remotedata';
 import { Status } from 'twitter-d';
 
-// Define what the RemoteData Success and Failure types will be.
-type State = RemoteData<Status, number>;
+// Define what the RemoteData Failure and Success types will be.
+type State = RemoteData<number, Status>;
 
 class Thing {
   // Set the initial state as Initialized.
@@ -54,20 +54,20 @@ class Thing {
   }
 
   private get view(state: State): (state: State) => string {
-    // Use `fold` to easily define logic based on the state.
-    // Fold takes four methods as parameters in the order of Initialized, Pending, Success, Failure
-    // and return a method method that takes a `RemoteData` instance as a parameter.
-    // When returned method gets called with a `RemoteData` state, the method matching the current
+    // Use `fold` to easily define logic based on the current state.
+    // Fold takes four methods as parameters in the order of Initialized, Pending, Failure, and
+    // Success and returns a method that takes a `RemoteData` state instance as a parameter. When
+    // the returned method gets called with a `RemoteData` state, the method matching the correct
     // state gets called.
-    return fold<string, Status, number>(
+    return fold<string, number, Status>(
       // What to do if the state is Initialized.
       () => 'Initialized',
       // What to do if the request is Pending.
       () => 'Loading...',
+      // What to do if the request fails.
+      (error: number) => `Error: ${error}`,
       // What to do if the request succeeds.
       (status: Status) => `Got tweet from ${status.screen_name}`,
-      // What to do if the request fails.
-      (error: string) => `Error: ${error}`,
     );
   }
 
@@ -86,3 +86,6 @@ References
 - [How Elm Slays a UI Antipattern](http://blog.jenkster.com/2016/06/how-elm-slays-a-ui-antipattern.html)
 - [Slaying a UI Antipattern with Angular](https://medium.com/@joanllenas/slaying-a-ui-antipattern-with-angular-4c7536fafc54)
 - [Slaying a UI Antipattern with Flow](https://medium.com/@gcanti/slaying-a-ui-antipattern-with-flow-5eed0cfb627b)
+- [Slaying a UI Antipattern in React](https://medium.com/javascript-inside/slaying-a-ui-antipattern-in-react-64a3b98242c)
+- [Slaying a UI Antipattern in Fantasyland](https://medium.com/javascript-inside/slaying-a-ui-antipattern-in-fantasyland-907cbc322d2a)
+- [Remote Data State as an Enum](http://holko.pl/2016/06/09/data-state-as-an-enum/)
