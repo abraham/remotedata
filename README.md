@@ -17,6 +17,8 @@ npm install @abraham/remotedata
 Usage
 -----
 
+Read [Slaying a UI Antipattern with Web Components (and TypeScript)](https://bendyworks.com/blog/slaying-a-ui-antipattern-with-web-components-and-typescript) for a more thorugh guide.
+
 This is an example class that gets a tweet (type `Status`) from a remote HTTP API.
 
 ```ts
