@@ -8,15 +8,15 @@ export enum Kinds {
 }
 
 export class Initialized {
-  public kind: typeof Kinds.Initialized = Kinds.Initialized;
+  readonly kind = Kinds.Initialized;
 }
 
 export class Pending {
-  public kind: typeof Kinds.Pending = Kinds.Pending;
+  readonly kind = Kinds.Pending;
 }
 
 export class Failure<E> {
-  public kind: typeof Kinds.Failure = Kinds.Failure;
+  readonly kind = Kinds.Failure;
 
   constructor(public error: E) {
     if (error === null || error === undefined) {
@@ -26,7 +26,7 @@ export class Failure<E> {
 }
 
 export class Success<D> {
-  public kind: typeof Kinds.Success = Kinds.Success;
+  readonly kind = Kinds.Success;
 
   constructor(public data: D) {
     if (data === null || data === undefined) {
