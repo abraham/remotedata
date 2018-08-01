@@ -20,7 +20,7 @@ export class Failure<E> {
 
   constructor(public error: E) {
     if (error === null || error === undefined) {
-      fail('Parameter "error" is required');
+      throw new Error('Parameter "error" is required');
     }
   }
 }
@@ -30,7 +30,7 @@ export class Success<D> {
 
   constructor(public data: D) {
     if (data === null || data === undefined) {
-      fail('Parameter "data" is required');
+      throw new Error('Parameter "data" is required');
     }
   }
 }
@@ -52,11 +52,13 @@ export function fold<T, E, D>(
       case Kinds.Success:
         return success(state.data);
       default:
-        return fail('Unknown RemoteData type used');
+        throw new NeverError(state);
     }
   }
 }
 
-function fail(error: string): never {
-  throw new Error(error);
+class NeverError extends Error {
+  constructor(value: never) {
+    super(`Unknown RemoteData state: ${value}`);
+  }
 }

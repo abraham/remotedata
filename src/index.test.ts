@@ -138,5 +138,5 @@ test('fold unknown', () => {
     successMock,
   );
 
-  expect(() => view(otherMock)).toThrowError('Unknown RemoteData type used');
+  expect(() => view(otherMock)).toThrowError('Unknown RemoteData state:');
 });
