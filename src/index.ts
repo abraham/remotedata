@@ -20,7 +20,7 @@ export class Failure<E> {
 
   constructor(public error: E) {
     if (error === null || error === undefined) {
-      throw new Error('Parameter "error" is required');
+      throw new TypeError('Parameter "error" is required');
     }
   }
 }
@@ -30,7 +30,7 @@ export class Success<D> {
 
   constructor(public data: D) {
     if (data === null || data === undefined) {
-      throw new Error('Parameter "data" is required');
+      throw new TypeError('Parameter "data" is required');
     }
   }
 }
