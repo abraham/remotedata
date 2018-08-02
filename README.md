@@ -1,6 +1,7 @@
 [![Version Status](https://img.shields.io/npm/v/@abraham/remotedata.svg?style=flat&label=version&colorB=4bc524)](https://npmjs.com/package/@abraham/remotedata)
 [![Build Status](https://img.shields.io/travis/abraham/remotedata.svg?style=flat)](https://travis-ci.org/abraham/remotedata)
 [![Dependency Status](https://david-dm.org/abraham/remotedata.svg?style=flat)](https://david-dm.org/abraham/remotedata)
+[![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@abraham/remotedata.svg?style=flat&colorB=4bc524)](https://bundlephobia.com/result?p=@abraham/remotedata)
 
 RemoteData
 ====
