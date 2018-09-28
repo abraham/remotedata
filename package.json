@@ -48,7 +48,14 @@
       "jsx",
       "json",
       "node"
-    ]
+    ],
+    "globals": {
+      "ts-jest": {
+        "diagnostics": {
+          "ignoreCodes": ["TS2554", "TS2345"]
+        }
+      }
+    }
   },
   "renovate": {
     "extends": [
