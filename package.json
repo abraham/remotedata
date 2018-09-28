@@ -30,7 +30,7 @@
   "devDependencies": {
     "@types/jest": "23.3.2",
     "jest": "23.6.0",
-    "ts-jest": "23.1.4",
+    "ts-jest": "23.10.2",
     "typescript": "3.1.1"
   },
   "jest": {
@@ -48,7 +48,14 @@
       "jsx",
       "json",
       "node"
-    ]
+    ],
+    "globals": {
+      "ts-jest": {
+        "diagnostics": {
+          "ignoreCodes": ["TS2554", "TS2345"]
+        }
+      }
+    }
   },
   "renovate": {
     "extends": [
