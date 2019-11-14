@@ -1,11 +1,11 @@
 export type RemoteData<E, D> = Initialized | Pending | Failure<E> | Success<D>;
 
 export enum Kinds {
-  Initialized = "Initialized",
-  Pending = "Pending",
-  Failure = "Failure",
-  Success = "Success",
-  _ = "_"
+  Initialized = 'Initialized',
+  Pending = 'Pending',
+  Failure = 'Failure',
+  Success = 'Success',
+  _ = '_'
 }
 
 type CompleteDataMatcher<T, E, D> = {
@@ -33,6 +33,7 @@ function isComplete<T, E, D>(
 ): matcher is CompleteDataMatcher<T, E, D> {
   return (matcher as CompleteDataMatcher<T, E, D>)[Kinds.Failure] !== undefined;
 }
+
 export class Initialized {
   readonly kind = Kinds.Initialized;
   match<T, E, D>(matcher: Matcher<T, E, D>): T {
