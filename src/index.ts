@@ -9,6 +9,7 @@ export enum Kinds {
 }
 
 type CompleteDataMatcher<T, E, D> = {
+  kind: 'complete';
   [Kinds.Initialized]: () => T;
   [Kinds.Pending]: () => T;
   [Kinds.Failure]: (error: E) => T;
@@ -16,6 +17,7 @@ type CompleteDataMatcher<T, E, D> = {
 };
 
 type PartialDataMatcher<T, E, D> = {
+  kind: 'partial';
   [Kinds.Initialized]?: () => T;
   [Kinds.Pending]?: () => T;
   [Kinds.Failure]?: (error: E) => T;
@@ -27,40 +29,38 @@ type Matcher<T, E, D> =
   | CompleteDataMatcher<T, E, D>
   | PartialDataMatcher<T, E, D>;
 
-// A type guard to let typescript realize that either it's a complete data mate
 function isComplete<T, E, D>(
   matcher: Matcher<T, E, D>
 ): matcher is CompleteDataMatcher<T, E, D> {
-  return (matcher as CompleteDataMatcher<T, E, D>)[Kinds.Failure] !== undefined;
+  return matcher.kind === 'complete';
+}
+
+function match<T, E, D>(
+  matcher: Matcher<T, E, D>,
+  kind: Kinds.Initialized | Kinds.Pending
+): T {
+  if (isComplete(matcher)) {
+    let specific = matcher[kind];
+    return specific();
+  }
+  let specific = matcher[kind];
+  if (specific !== undefined) {
+    return specific();
+  }
+  return matcher[Kinds._]();
 }
 
 export class Initialized {
   readonly kind = Kinds.Initialized;
   match<T, E, D>(matcher: Matcher<T, E, D>): T {
-    if (isComplete(matcher)) {
-      let specific = matcher[this.kind];
-      return specific();
-    }
-    let specific = matcher[this.kind];
-    if (specific !== undefined) {
-      return specific();
-    }
-    return matcher[Kinds._]();
+    return match(matcher, this.kind);
   }
 }
 
 export class Pending {
   readonly kind = Kinds.Pending;
   match<T, E, D>(matcher: Matcher<T, E, D>): T {
-    if (isComplete(matcher)) {
-      let specific = matcher[this.kind];
-      return specific();
-    }
-    let specific = matcher[this.kind];
-    if (specific !== undefined) {
-      return specific();
-    }
-    return matcher[Kinds._]();
+    return match(matcher, this.kind);
   }
 }
 
