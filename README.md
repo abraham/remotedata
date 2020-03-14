@@ -2,6 +2,7 @@
 [![Build Status](https://img.shields.io/travis/abraham/remotedata.svg?style=flat)](https://travis-ci.org/abraham/remotedata)
 [![Dependency Status](https://david-dm.org/abraham/remotedata.svg?style=flat)](https://david-dm.org/abraham/remotedata)
 [![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@abraham/remotedata.svg?style=flat&colorB=4bc524)](https://bundlephobia.com/result?p=@abraham/remotedata)
+[![Coverage Status](https://coveralls.io/repos/github/abraham/remotedata/badge.svg?branch=master)](https://coveralls.io/github/abraham/remotedata?branch=master)
 
 RemoteData
 ====
@@ -18,7 +19,7 @@ npm install @abraham/remotedata
 Usage
 -----
 
-Read [Slaying a UI Antipattern with Web Components (and TypeScript)](https://bendyworks.com/blog/slaying-a-ui-antipattern-with-web-components-and-typescript) for a more thorugh guide.
+Read [Slaying a UI Antipattern with Web Components (and TypeScript)](https://bendyworks.com/blog/slaying-a-ui-antipattern-with-web-components-and-typescript) for a more thorough guide.
 
 This is an example class that gets a tweet (type `Status`) from a remote HTTP API.
 
