@@ -1,9 +1,11 @@
+os: linux
+dist: bionic
 language: node_js
 node_js:
+  - 10
+  - 12
   - node
-cache:
-  directories:
-    - node_modules
-script:
-  - npm test
-  - npm run build
+env:
+  - NODE_SCRIPT="test"
+  - NODE_SCRIPT="build"
+script: npm run $NODE_SCRIPT
