@@ -8,4 +8,5 @@ node_js:
 env:
   - NODE_SCRIPT="test:coveralls"
   - NODE_SCRIPT="build"
+  - NODE_SCRIPT="lint"
 script: npm run $NODE_SCRIPT

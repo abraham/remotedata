@@ -1,3 +1,9 @@
+class NeverError extends Error {
+  constructor(value: never) {
+    super(`Unknown RemoteData state: ${value}`);
+  }
+}
+
 export type RemoteData<E, D> = Initialized | Pending | Failure<E> | Success<D>;
 
 export enum Kinds {
@@ -41,7 +47,7 @@ export function fold<T, E, D>(
   failure: (error: E) => T,
   success: (data: D) => T,
 ): (state: RemoteData<E, D>) => T {
-  return (state: RemoteData<E, D>) => {
+  return (state: RemoteData<E, D>): T => {
     switch (state.kind) {
       case Kinds.Initialized:
         return initialized();
@@ -54,11 +60,5 @@ export function fold<T, E, D>(
       default:
         throw new NeverError(state);
     }
-  }
-}
-
-class NeverError extends Error {
-  constructor(value: never) {
-    super(`Unknown RemoteData state: ${value}`);
   }
 }
