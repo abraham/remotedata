@@ -6,6 +6,6 @@ node_js:
   - 12
   - node
 env:
-  - NODE_SCRIPT="test"
+  - NODE_SCRIPT="test:coveralls"
   - NODE_SCRIPT="build"
 script: npm run $NODE_SCRIPT
