@@ -5,8 +5,9 @@ node_js:
   - 10
   - 12
   - node
-env:
-  - NODE_SCRIPT="test:coveralls"
-  - NODE_SCRIPT="build"
-  - NODE_SCRIPT="lint"
-script: npm run $NODE_SCRIPT
+script:
+  - npm run lint
+  - npm run build
+  - npm run pkg-ok
+  - npm run test
+  - npm run coveralls
