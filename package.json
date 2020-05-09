@@ -41,7 +41,7 @@
     "eslint-plugin-jest": "23.10.0",
     "jest": "26.0.1",
     "pkg-ok": "2.3.1",
-    "ts-jest": "25.5.0",
+    "ts-jest": "25.5.1",
     "typescript": "3.8.3"
   },
   "jest": {
