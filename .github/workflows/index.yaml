@@ -1,5 +1,9 @@
 name: Index
-on: pull_request
+on:
+  pull_request:
+  push:
+    branches:
+      - master
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -16,5 +20,7 @@ jobs:
       - run: npm run lint
       - run: npm run build
       - run: npm run test
-      - run: npm run coveralls
       - run: npm run pkg-ok
+      - uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
