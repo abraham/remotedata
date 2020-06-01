@@ -2,10 +2,10 @@ import { Failure, fold, Initialized, Kinds, Pending, Success } from './index';
 
 test('Kinds', () => {
   expect(Kinds).toEqual({
-    'Failure': 'Failure',
-    'Initialized': 'Initialized',
-    'Pending': 'Pending',
-    'Success': 'Success'
+    Failure: 'Failure',
+    Initialized: 'Initialized',
+    Pending: 'Pending',
+    Success: 'Success',
   });
 });
 
@@ -48,12 +48,7 @@ test('fold initialized', () => {
   const pendingMock = jest.fn();
   const successMock = jest.fn();
   const failureMock = jest.fn();
-  const view = fold(
-    initializedMock,
-    pendingMock,
-    failureMock,
-    successMock,
-  );
+  const view = fold(initializedMock, pendingMock, failureMock, successMock);
 
   view(new Initialized());
   expect(initializedMock).toHaveBeenCalledTimes(1);
@@ -68,12 +63,7 @@ test('fold pending', () => {
   const pendingMock = jest.fn();
   const successMock = jest.fn();
   const failureMock = jest.fn();
-  const view = fold(
-    initializedMock,
-    pendingMock,
-    failureMock,
-    successMock,
-  );
+  const view = fold(initializedMock, pendingMock, failureMock, successMock);
 
   view(new Pending());
   expect(initializedMock).not.toHaveBeenCalled();
@@ -88,12 +78,7 @@ test('fold success', () => {
   const pendingMock = jest.fn();
   const successMock = jest.fn();
   const failureMock = jest.fn();
-  const view = fold(
-    initializedMock,
-    pendingMock,
-    failureMock,
-    successMock,
-  );
+  const view = fold(initializedMock, pendingMock, failureMock, successMock);
 
   const data = { apple: 'sauce' };
   view(new Success(data));
@@ -109,12 +94,7 @@ test('fold failure', () => {
   const pendingMock = jest.fn();
   const successMock = jest.fn();
   const failureMock = jest.fn();
-  const view = fold(
-    initializedMock,
-    pendingMock,
-    failureMock,
-    successMock,
-  );
+  const view = fold(initializedMock, pendingMock, failureMock, successMock);
 
   const error = 500;
   view(new Failure(error));
@@ -131,12 +111,7 @@ test('fold unknown', () => {
   const pendingMock = jest.fn();
   const successMock = jest.fn();
   const failureMock = jest.fn();
-  const view = fold(
-    initializedMock,
-    pendingMock,
-    failureMock,
-    successMock,
-  );
+  const view = fold(initializedMock, pendingMock, failureMock, successMock);
 
   expect(() => view(otherMock)).toThrowError('Unknown RemoteData state:');
 });

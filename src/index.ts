@@ -60,5 +60,5 @@ export function fold<T, E, D>(
       default:
         throw new NeverError(state);
     }
-  }
+  };
 }
