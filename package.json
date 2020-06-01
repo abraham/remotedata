@@ -7,7 +7,6 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "lint": "eslint src --ext .ts",
     "pkg-ok": "pkg-ok",
     "prepare": "npm run build",
@@ -35,7 +34,6 @@
     "@types/jest": "25.2.3",
     "@typescript-eslint/eslint-plugin": "3.0.2",
     "@typescript-eslint/parser": "3.0.2",
-    "coveralls": "3.1.0",
     "eslint": "7.1.0",
     "eslint-plugin-import": "2.20.2",
     "eslint-plugin-jest": "23.13.2",
