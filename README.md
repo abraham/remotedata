@@ -4,20 +4,17 @@
 [![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@abraham/remotedata.svg?style=flat&colorB=4bc524)](https://bundlephobia.com/result?p=@abraham/remotedata)
 [![Coverage Status](https://coveralls.io/repos/github/abraham/remotedata/badge.svg?branch=master)](https://coveralls.io/github/abraham/remotedata?branch=master)
 
-RemoteData
-====
+# RemoteData
 
 Lightweight TypeScript RemoteData implementation
 
-Install
-----
+## Install
 
 ```sh
 npm install @abraham/remotedata
 ```
 
-Usage
------
+## Usage
 
 Read [Slaying a UI Antipattern with Web Components (and TypeScript)](https://bendyworks.com/blog/slaying-a-ui-antipattern-with-web-components-and-typescript) for a more thorough guide.
 
@@ -84,8 +81,7 @@ class Thing {
 }
 ```
 
-References
-====
+# References
 
 - [How Elm Slays a UI Antipattern](http://blog.jenkster.com/2016/06/how-elm-slays-a-ui-antipattern.html)
 - [Slaying a UI Antipattern with Angular](https://medium.com/@joanllenas/slaying-a-ui-antipattern-with-angular-4c7536fafc54)
