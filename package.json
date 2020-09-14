@@ -36,8 +36,8 @@
   "homepage": "https://github.com/abraham/remotedata#readme",
   "devDependencies": {
     "@types/jest": "26.0.13",
-    "@typescript-eslint/eslint-plugin": "4.1.0",
-    "@typescript-eslint/parser": "4.1.0",
+    "@typescript-eslint/eslint-plugin": "4.1.1",
+    "@typescript-eslint/parser": "4.1.1",
     "eslint": "7.9.0",
     "eslint-plugin-import": "2.22.0",
     "eslint-plugin-jest": "24.0.1",
