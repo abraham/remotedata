@@ -75,14 +75,6 @@
       }
     }
   },
-  "renovate": {
-    "extends": [
-      "config:base"
-    ],
-    "devDependencies": {
-      "automerge": true
-    }
-  },
   "eslintConfig": {
     "root": true,
     "parser": "@typescript-eslint/parser",
