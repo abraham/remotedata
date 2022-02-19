@@ -1,9 +1,5 @@
 name: Index
-on:
-  pull_request:
-  push:
-    branches:
-      - master
+on: push
 jobs:
   test:
     runs-on: ubuntu-latest
