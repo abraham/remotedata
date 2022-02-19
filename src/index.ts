@@ -62,3 +62,12 @@ export function fold<T, E, D>(
     }
   };
 }
+
+export const isInitialized = (state: unknown): state is Initialized =>
+  state instanceof Initialized;
+export const isPending = (state: unknown): state is Pending =>
+  state instanceof Pending;
+export const isFailure = <E>(state: unknown): state is Failure<E> =>
+  state instanceof Failure;
+export const isSuccess = <D>(state: unknown): state is Success<D> =>
+  state instanceof Success;
