@@ -81,6 +81,23 @@ class Thing {
 }
 ```
 
+Using included [type guards](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates).
+
+```ts
+import { RemoteData } from '@abraham/remotedata';
+import { Status } from 'twitter-d';
+import { getState } from './state';
+
+// Define what the RemoteData Failure and Success types will be.
+type State = RemoteData<number, Status>;
+
+const state: State = getState();
+if (isSuccess(state)) {
+  // state is known to be of type Success<Status>
+  console.log(state.data.full_text);
+}
+```
+
 # References
 
 - [How Elm Slays a UI Antipattern](http://blog.jenkster.com/2016/06/how-elm-slays-a-ui-antipattern.html)
