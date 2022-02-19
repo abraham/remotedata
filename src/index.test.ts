@@ -1,4 +1,15 @@
-import { Failure, fold, Initialized, Kinds, Pending, Success } from './index';
+import {
+  Failure,
+  fold,
+  Initialized,
+  isFailure,
+  isInitialized,
+  isPending,
+  isSuccess,
+  Kinds,
+  Pending,
+  Success,
+} from './index';
 
 test('Kinds', () => {
   expect(Kinds).toEqual({
@@ -12,11 +23,15 @@ test('Kinds', () => {
 test('Initialized', () => {
   expect(new Initialized()).toBeInstanceOf(Initialized);
   expect(new Initialized().kind).toEqual('Initialized');
+  expect(isInitialized(new Initialized())).toBeTruthy();
+  expect(isInitialized(new Pending())).toBeFalsy();
 });
 
 test('Pending', () => {
   expect(new Pending()).toBeInstanceOf(Pending);
   expect(new Pending().kind).toEqual('Pending');
+  expect(isPending(new Pending())).toBeTruthy();
+  expect(isPending(new Initialized())).toBeFalsy();
 });
 
 test('Success', () => {
@@ -25,10 +40,16 @@ test('Success', () => {
   expect(state).toBeInstanceOf(Success);
   expect(state.kind).toEqual('Success');
   expect(state.data).toEqual(data);
+  expect(isSuccess(state)).toBeTruthy();
+  expect(isSuccess(new Initialized())).toBeFalsy();
 });
 
 test('Success without data', () => {
   expect(() => new Success()).toThrowError('Parameter "data" is required');
+  expect(() => new Success(null)).toThrowError('Parameter "data" is required');
+  expect(() => new Success(undefined)).toThrowError(
+    'Parameter "data" is required',
+  );
 });
 
 test('Failure', () => {
@@ -37,10 +58,16 @@ test('Failure', () => {
   expect(state).toBeInstanceOf(Failure);
   expect(state.kind).toEqual('Failure');
   expect(state.error).toEqual(error);
+  expect(isFailure(state)).toBeTruthy();
+  expect(isFailure(new Initialized())).toBeFalsy();
 });
 
 test('Failure without error', () => {
   expect(() => new Failure()).toThrowError('Parameter "error" is required');
+  expect(() => new Failure(null)).toThrowError('Parameter "error" is required');
+  expect(() => new Failure(undefined)).toThrowError(
+    'Parameter "error" is required',
+  );
 });
 
 test('fold initialized', () => {
