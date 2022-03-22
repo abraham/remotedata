@@ -2,9 +2,9 @@
   "name": "@abraham/remotedata",
   "version": "1.0.0",
   "description": "Lightweight TypeScript RemoteData implementation",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "format": "prettier . --write",
