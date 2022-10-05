@@ -45,11 +45,9 @@ test('Success', () => {
 });
 
 test('Success without data', () => {
-  expect(() => new Success()).toThrowError('Parameter "data" is required');
-  expect(() => new Success(null)).toThrowError('Parameter "data" is required');
-  expect(() => new Success(undefined)).toThrowError(
-    'Parameter "data" is required',
-  );
+  expect(() => new Success()).toThrow('Parameter "data" is required');
+  expect(() => new Success(null)).toThrow('Parameter "data" is required');
+  expect(() => new Success(undefined)).toThrow('Parameter "data" is required');
 });
 
 test('Failure', () => {
@@ -63,11 +61,9 @@ test('Failure', () => {
 });
 
 test('Failure without error', () => {
-  expect(() => new Failure()).toThrowError('Parameter "error" is required');
-  expect(() => new Failure(null)).toThrowError('Parameter "error" is required');
-  expect(() => new Failure(undefined)).toThrowError(
-    'Parameter "error" is required',
-  );
+  expect(() => new Failure()).toThrow('Parameter "error" is required');
+  expect(() => new Failure(null)).toThrow('Parameter "error" is required');
+  expect(() => new Failure(undefined)).toThrow('Parameter "error" is required');
 });
 
 test('fold initialized', () => {
@@ -140,5 +136,5 @@ test('fold unknown', () => {
   const failureMock = jest.fn();
   const view = fold(initializedMock, pendingMock, failureMock, successMock);
 
-  expect(() => view(otherMock)).toThrowError('Unknown RemoteData state:');
+  expect(() => view(otherMock)).toThrow('Unknown RemoteData state:');
 });
