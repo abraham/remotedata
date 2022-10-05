@@ -53,7 +53,17 @@
       "<rootDir>/src"
     ],
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "diagnostics": {
+            "ignoreCodes": [
+              "TS2554",
+              "TS2345"
+            ]
+          }
+        }
+      ]
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
     "moduleFileExtensions": [
@@ -63,17 +73,7 @@
       "jsx",
       "json",
       "node"
-    ],
-    "globals": {
-      "ts-jest": {
-        "diagnostics": {
-          "ignoreCodes": [
-            "TS2554",
-            "TS2345"
-          ]
-        }
-      }
-    }
+    ]
   },
   "eslintConfig": {
     "root": true,
