@@ -27,11 +27,12 @@
     "module": "esnext",                                  /* Specify what module code is generated. */
     "rootDir": "./src",                                  /* Specify the root folder within your source files. */
     "moduleResolution": "node",                          /* Specify how TypeScript looks up a file from a given module specifier. */
+    "ignoreDeprecations": "6.0",                         /* Keep node10 module resolution until a full module resolution migration. */
     // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
     // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like `./node_modules/@types`. */
-    // "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
+    "types": ["node", "jest"],                           /* Include Node and Jest globals for tooling/tests. */
     // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
     // "resolveJsonModule": true,                        /* Enable importing .json files */
     // "noResolve": true,                                /* Disallow `import`s, `require`s or `<reference>`s from expanding the number of files TypeScript should add to a project. */
