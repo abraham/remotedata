@@ -25,8 +25,6 @@ export default [
       'plugin:@typescript-eslint/eslint-recommended',
       'plugin:@typescript-eslint/recommended',
       'plugin:jest/recommended',
-      'plugin:import/errors',
-      'plugin:import/typescript',
     ],
   }),
 ];
