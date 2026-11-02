@@ -91,3 +91,67 @@ export const isFailure = <E = unknown>(state: unknown): state is Failure<E> =>
 /** Whether `state` is a Success. */
 export const isSuccess = <D = unknown>(state: unknown): state is Success<D> =>
   kindOf(state) === Kinds.Success;
+
+/** Transforms Success data; other states pass through unchanged. */
+export function map<E, D, R>(
+  state: RemoteData<E, D>,
+  fn: (data: D) => R,
+): RemoteData<E, R> {
+  return state.kind === Kinds.Success ? new Success(fn(state.data)) : state;
+}
+
+/** Transforms a Failure error; other states pass through unchanged. */
+export function mapError<E, D, R>(
+  state: RemoteData<E, D>,
+  fn: (error: E) => R,
+): RemoteData<R, D> {
+  return state.kind === Kinds.Failure ? new Failure(fn(state.error)) : state;
+}
+
+/** Chains a Success into another RemoteData; other states pass through unchanged. */
+export function andThen<E, D, F, R>(
+  state: RemoteData<E, D>,
+  fn: (data: D) => RemoteData<F, R>,
+): RemoteData<E | F, R> {
+  return state.kind === Kinds.Success ? fn(state.data) : state;
+}
+
+/** Returns Success data, or `fallback` for any other state. */
+export function withDefault<D>(state: RemoteData<unknown, D>, fallback: D): D {
+  return state.kind === Kinds.Success ? state.data : fallback;
+}
+
+type SuccessData<T> = T extends Success<infer D> ? D : never;
+type FailureError<T> = T extends Failure<infer E> ? E : never;
+
+/**
+ * Combines states into one: the first Failure, else Pending if any are pending,
+ * else Initialized if any are, else Success with every value in order.
+ */
+export function combine<T extends readonly RemoteData[]>(
+  states: [...T],
+): RemoteData<FailureError<T[number]>, { [K in keyof T]: SuccessData<T[K]> }> {
+  const failure = states.find((state) => isFailure(state));
+  if (failure) {
+    return failure as Failure<FailureError<T[number]>>;
+  }
+  if (states.some((state) => isPending(state))) {
+    return new Pending();
+  }
+  if (states.some((state) => isInitialized(state))) {
+    return new Initialized();
+  }
+  const data = states.map((state) => (state as Success).data);
+  return new Success(data as { [K in keyof T]: SuccessData<T[K]> });
+}
+
+/** Resolves to Success with the promise's value, or Failure with its rejection reason. */
+export async function fromPromise<D>(
+  promise: PromiseLike<D>,
+): Promise<Failure | Success<D>> {
+  try {
+    return new Success(await promise);
+  } catch (error) {
+    return new Failure(error);
+  }
+}

@@ -103,6 +103,31 @@ if (isSuccess(state)) {
 }
 ```
 
+## Helpers
+
+```ts
+import {
+  andThen,
+  combine,
+  fromPromise,
+  map,
+  mapError,
+  withDefault,
+} from '@abraham/remotedata';
+
+// Success or Failure from a promise.
+const post = await fromPromise(fetchPost());
+// Transform Success data or the Failure error; other states pass through.
+const title = map(post, (p) => p.title);
+const message = mapError(post, (error) => String(error));
+// Chain into another RemoteData when Success.
+const author = andThen(post, (p) => getAuthor(p.authorId));
+// Success data or a fallback.
+const text = withDefault(title, 'Untitled');
+// First Failure, else Pending, else Initialized, else Success with all values.
+const both = combine([post, author]);
+```
+
 # References
 
 - [How Elm Slays a UI Antipattern](http://blog.jenkster.com/2016/06/how-elm-slays-a-ui-antipattern.html)

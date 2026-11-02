@@ -1,16 +1,23 @@
 import assert from 'node:assert/strict';
 import { mock, test } from 'node:test';
 import {
+  andThen,
+  combine,
   Failure,
   fold,
+  fromPromise,
   Initialized,
   isFailure,
   isInitialized,
   isPending,
   isSuccess,
   Kinds,
+  map,
+  mapError,
   Pending,
   Success,
+  withDefault,
+  type RemoteData,
 } from './index.ts';
 
 function foldMocks() {
@@ -140,4 +147,65 @@ test('fold unknown', () => {
   const other = { kind: 'Other' } as unknown as Initialized;
 
   assert.throws(() => view(other), /Unknown RemoteData state: Other/);
+});
+
+const initialized: RemoteData<string, number> = new Initialized();
+const pending: RemoteData<string, number> = new Pending();
+const failure: RemoteData<string, number> = new Failure('oops');
+const success: RemoteData<string, number> = new Success(2);
+
+test('map', () => {
+  const double = (n: number) => n * 2;
+  assert.deepEqual(map(success, double), new Success(4));
+  assert.equal(map(failure, double), failure);
+  assert.equal(map(pending, double), pending);
+  assert.equal(map(initialized, double), initialized);
+});
+
+test('mapError', () => {
+  const upper = (s: string) => s.toUpperCase();
+  assert.deepEqual(mapError(failure, upper), new Failure('OOPS'));
+  assert.equal(mapError(success, upper), success);
+  assert.equal(mapError(pending, upper), pending);
+  assert.equal(mapError(initialized, upper), initialized);
+});
+
+test('andThen', () => {
+  const half = (n: number): RemoteData<string, number> =>
+    n % 2 === 0 ? new Success(n / 2) : new Failure('odd');
+  assert.deepEqual(andThen(success, half), new Success(1));
+  assert.deepEqual(andThen(new Success(3), half), new Failure('odd'));
+  assert.equal(andThen(failure, half), failure);
+  assert.equal(andThen(pending, half), pending);
+  assert.equal(andThen(initialized, half), initialized);
+});
+
+test('withDefault', () => {
+  assert.equal(withDefault(success, 0), 2);
+  assert.equal(withDefault(failure, 0), 0);
+  assert.equal(withDefault(pending, 0), 0);
+  assert.equal(withDefault(initialized, 0), 0);
+});
+
+test('combine', () => {
+  const text: RemoteData<string, string> = new Success('a');
+  const both = combine([success, text]);
+  assert.deepEqual(both, new Success([2, 'a']));
+  if (isSuccess(both)) {
+    const [n, s]: [number, string] = both.data;
+    assert.equal(n + s.length, 3);
+  }
+  assert.deepEqual(combine([]), new Success([]));
+  assert.equal(combine([success, failure, pending]), failure);
+  assert.deepEqual(combine([success, initialized, pending]), new Pending());
+  assert.deepEqual(combine([success, initialized]), new Initialized());
+});
+
+test('fromPromise', async () => {
+  assert.deepEqual(await fromPromise(Promise.resolve(1)), new Success(1));
+  const error = new Error('nope');
+  assert.deepEqual(
+    await fromPromise(Promise.reject(error)),
+    new Failure(error),
+  );
 });
