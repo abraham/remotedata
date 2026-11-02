@@ -45,7 +45,7 @@
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^10.2.1",
-    "pkg-ok": "^3.0.0",
+    "pkg-ok": "^4.0.0",
     "prettier": "3.9.10",
     "typescript": "^6.0.3"
   }
