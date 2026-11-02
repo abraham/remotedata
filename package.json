@@ -36,6 +36,9 @@
     "url": "https://github.com/abraham/remotedata/issues"
   },
   "homepage": "https://github.com/abraham/remotedata#readme",
+  "engines": {
+    "node": ">=22"
+  },
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.0",
     "@eslint/js": "^10.0.1",
