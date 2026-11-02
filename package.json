@@ -16,7 +16,7 @@
     "pkg-ok": "pkg-ok",
     "prepare": "npm run build",
     "prepublishOnly": "npm run pkg-ok",
-    "test": "jest"
+    "test": "npm run build && node --test"
   },
   "repository": {
     "type": "git",
@@ -41,43 +41,12 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.0",
     "@eslint/js": "^10.0.1",
-    "@types/jest": "^30.0.0",
+    "@types/node": "^22.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^10.2.1",
-    "eslint-plugin-jest": "^29.0.1",
-    "jest": "^30.0.3",
     "pkg-ok": "^4.0.0",
     "prettier": "3.9.10",
-    "ts-jest": "^29.0.0",
     "typescript": "^6.0.3"
-  },
-  "jest": {
-    "collectCoverage": true,
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "transform": {
-      "^.+\\.tsx?$": [
-        "ts-jest",
-        {
-          "diagnostics": {
-            "ignoreCodes": [
-              "TS2554",
-              "TS2345"
-            ]
-          }
-        }
-      ]
-    },
-    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
   }
 }

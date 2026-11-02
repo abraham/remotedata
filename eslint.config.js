@@ -19,12 +19,11 @@ export default [
       sourceType: 'module',
       project: './tsconfig.lint.json',
     },
-    plugins: ['@typescript-eslint', 'jest'],
+    plugins: ['@typescript-eslint'],
     extends: [
       'eslint:recommended',
       'plugin:@typescript-eslint/eslint-recommended',
       'plugin:@typescript-eslint/recommended',
-      'plugin:jest/recommended',
     ],
   }),
 ];
