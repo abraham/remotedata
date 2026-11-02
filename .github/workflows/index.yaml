@@ -22,9 +22,10 @@ jobs:
         with:
           node-version: lts/*
       - run: npm install
+      - run: npm run build
+      - run: npm run typecheck
       - run: npm run lint:eslint
       - run: npm run format:check
-      - run: npm run build
       - run: npm run pkg-ok
   test:
     runs-on: ubuntu-latest

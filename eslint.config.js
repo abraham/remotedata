@@ -1,29 +1,26 @@
-import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-});
-
-export default [
-  ...compat.config({
-    parser: '@typescript-eslint/parser',
-    parserOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      project: './tsconfig.lint.json',
+export default defineConfig(
+  js.configs.recommended,
+  tseslint.configs.recommendedTypeChecked,
+  {
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.lint.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
-    plugins: ['@typescript-eslint'],
-    extends: [
-      'eslint:recommended',
-      'plugin:@typescript-eslint/eslint-recommended',
-      'plugin:@typescript-eslint/recommended',
-    ],
-  }),
-];
+    rules: {
+      '@typescript-eslint/no-floating-promises': [
+        'error',
+        {
+          allowForKnownSafeCalls: [
+            { from: 'package', name: ['test'], package: 'node:test' },
+          ],
+        },
+      ],
+    },
+  },
+);

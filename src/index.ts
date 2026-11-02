@@ -1,6 +1,6 @@
 class NeverError extends Error {
   constructor(value: never) {
-    super(`Unknown RemoteData state: ${value}`);
+    super(`Unknown RemoteData state: ${String(value)}`);
   }
 }
 
@@ -14,15 +14,15 @@ export enum Kinds {
 }
 
 export class Initialized {
-  readonly kind = Kinds.Initialized;
+  readonly kind: Kinds.Initialized = Kinds.Initialized;
 }
 
 export class Pending {
-  readonly kind = Kinds.Pending;
+  readonly kind: Kinds.Pending = Kinds.Pending;
 }
 
 export class Failure<E> {
-  readonly kind = Kinds.Failure;
+  readonly kind: Kinds.Failure = Kinds.Failure;
 
   constructor(public error: E) {
     if (error === null || error === undefined) {
@@ -32,7 +32,7 @@ export class Failure<E> {
 }
 
 export class Success<D> {
-  readonly kind = Kinds.Success;
+  readonly kind: Kinds.Success = Kinds.Success;
 
   constructor(public data: D) {
     if (data === null || data === undefined) {
