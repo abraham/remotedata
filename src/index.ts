@@ -1,4 +1,6 @@
 class NeverError extends Error {
+  override readonly name = 'NeverError';
+
   constructor(value: never) {
     super(`Unknown RemoteData state: ${String(value)}`);
   }
