@@ -16,64 +16,72 @@ npm install @abraham/remotedata
 
 Read [Slaying a UI Antipattern with Web Components (and TypeScript)](https://bendyworks.com/blog/slaying-a-ui-antipattern-with-web-components-and-typescript) for a more thorough guide.
 
-This is an example class that gets a tweet (type `Status`) from a remote HTTP API.
+This is an example class that gets a post (type `Post`) from a remote HTTP API.
 
 ```ts
-import { Failure, fold, Initialized, Pending, RemoteData, Success } from '@abraham/remotedata';
-import { Status } from 'twitter-d';
+import {
+  Failure,
+  fold,
+  Initialized,
+  Pending,
+  Success,
+  type RemoteData,
+} from '@abraham/remotedata';
+
+interface Post {
+  title: string;
+}
 
 // Define what the RemoteData Failure and Success types will be.
-type State = RemoteData<number, Status>;
+type State = RemoteData<number, Post>;
 
 class Thing {
   // Set the initial state as Initialized.
   private state: State = new Initialized();
 
+  // Use `fold` to easily define logic based on the current state.
+  // Fold takes four methods as parameters in the order of Initialized, Pending, Failure, and
+  // Success and returns a method that takes a `RemoteData` state instance as a parameter. When
+  // the returned method gets called with a `RemoteData` state, the method matching the correct
+  // state gets called.
+  private view = fold<string, number, Post>(
+    // What to do if the state is Initialized.
+    () => 'Initialized',
+    // What to do if the request is Pending.
+    () => 'Loading...',
+    // What to do if the request fails.
+    (error) => `Error: ${error}`,
+    // What to do if the request succeeds.
+    (post) => `Got post ${post.title}`,
+  );
+
   constructor() {
     // On instantiation start the remote call and render the current state.
-    this.getStatus();
+    void this.getPost();
     this.render();
   }
 
-  private async function getStatus() {
+  private async getPost(): Promise<void> {
     // Before starting the remote call set the current state to Pending.
     this.state = new Pending();
     // Perform the actual remote request.
-    const response = await fetch('https://api.example.com/tweet');
+    const response = await fetch('https://api.example.com/post');
     if (response.ok) {
       // If the request succeeds set the state to Success with the returned data.
-      const status: Status = await response.json();
-      this.state = new Success(status);
+      const post = (await response.json()) as Post;
+      this.state = new Success(post);
     } else {
       // If the request does not succeed set the state to Failure with the reason.
-      this.state = new Failure(status_code);
+      this.state = new Failure(response.status);
     }
     // Render the new state.
     this.render();
   }
 
-  private get view(state: State): (state: State) => string {
-    // Use `fold` to easily define logic based on the current state.
-    // Fold takes four methods as parameters in the order of Initialized, Pending, Failure, and
-    // Success and returns a method that takes a `RemoteData` state instance as a parameter. When
-    // the returned method gets called with a `RemoteData` state, the method matching the correct
-    // state gets called.
-    return fold<string, number, Status>(
-      // What to do if the state is Initialized.
-      () => 'Initialized',
-      // What to do if the request is Pending.
-      () => 'Loading...',
-      // What to do if the request fails.
-      (error: number) => `Error: ${error}`,
-      // What to do if the request succeeds.
-      (status: Status) => `Got tweet from ${status.screen_name}`,
-    );
-  }
-
-  private render(): string {
+  private render(): void {
     // Render the current state in your UI.
-    // `this.view` returns a method which is executed with the current state as a parameter.
-    const text: string = this.view(this.state);
+    // `this.view` is executed with the current state as a parameter.
+    const text = this.view(this.state);
     // Maybe put it in a template.
   }
 }
@@ -82,17 +90,16 @@ class Thing {
 Using included [type guards](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates).
 
 ```ts
-import { RemoteData } from '@abraham/remotedata';
-import { Status } from 'twitter-d';
-import { getState } from './state';
+import { isSuccess, type RemoteData } from '@abraham/remotedata';
+import { getState, type Post } from './state';
 
 // Define what the RemoteData Failure and Success types will be.
-type State = RemoteData<number, Status>;
+type State = RemoteData<number, Post>;
 
 const state: State = getState();
 if (isSuccess(state)) {
-  // state is known to be of type Success<Status>
-  console.log(state.data.full_text);
+  // state is known to be of type Success<Post>
+  console.log(state.data.title);
 }
 ```
 
