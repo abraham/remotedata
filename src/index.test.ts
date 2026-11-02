@@ -1,3 +1,5 @@
+import assert from 'node:assert/strict';
+import { mock, test } from 'node:test';
 import {
   Failure,
   fold,
@@ -9,132 +11,130 @@ import {
   Kinds,
   Pending,
   Success,
-} from './index';
+} from '../dist/index.js';
+
+function foldMocks() {
+  const initializedMock = mock.fn();
+  const pendingMock = mock.fn();
+  const successMock = mock.fn();
+  const failureMock = mock.fn();
+  const view = fold(initializedMock, pendingMock, failureMock, successMock);
+  return { initializedMock, pendingMock, successMock, failureMock, view };
+}
 
 test('Kinds', () => {
-  expect(Kinds).toEqual({
-    Failure: 'Failure',
-    Initialized: 'Initialized',
-    Pending: 'Pending',
-    Success: 'Success',
-  });
+  assert.deepEqual(
+    { ...Kinds },
+    {
+      Failure: 'Failure',
+      Initialized: 'Initialized',
+      Pending: 'Pending',
+      Success: 'Success',
+    },
+  );
 });
 
 test('Initialized', () => {
-  expect(new Initialized()).toBeInstanceOf(Initialized);
-  expect(new Initialized().kind).toEqual('Initialized');
-  expect(isInitialized(new Initialized())).toBeTruthy();
-  expect(isInitialized(new Pending())).toBeFalsy();
+  assert.ok(new Initialized() instanceof Initialized);
+  assert.equal(new Initialized().kind, 'Initialized');
+  assert.ok(isInitialized(new Initialized()));
+  assert.ok(!isInitialized(new Pending()));
 });
 
 test('Pending', () => {
-  expect(new Pending()).toBeInstanceOf(Pending);
-  expect(new Pending().kind).toEqual('Pending');
-  expect(isPending(new Pending())).toBeTruthy();
-  expect(isPending(new Initialized())).toBeFalsy();
+  assert.ok(new Pending() instanceof Pending);
+  assert.equal(new Pending().kind, 'Pending');
+  assert.ok(isPending(new Pending()));
+  assert.ok(!isPending(new Initialized()));
 });
 
 test('Success', () => {
   const data = { apple: 'sauce' };
   const state = new Success(data);
-  expect(state).toBeInstanceOf(Success);
-  expect(state.kind).toEqual('Success');
-  expect(state.data).toEqual(data);
-  expect(isSuccess(state)).toBeTruthy();
-  expect(isSuccess(new Initialized())).toBeFalsy();
+  assert.ok(state instanceof Success);
+  assert.equal(state.kind, 'Success');
+  assert.deepEqual(state.data, data);
+  assert.ok(isSuccess(state));
+  assert.ok(!isSuccess(new Initialized()));
 });
 
 test('Success without data', () => {
-  expect(() => new Success()).toThrow('Parameter "data" is required');
-  expect(() => new Success(null)).toThrow('Parameter "data" is required');
-  expect(() => new Success(undefined)).toThrow('Parameter "data" is required');
+  // @ts-expect-error data is required
+  assert.throws(() => new Success(), /Parameter "data" is required/);
+  assert.throws(() => new Success(null), /Parameter "data" is required/);
+  assert.throws(() => new Success(undefined), /Parameter "data" is required/);
 });
 
 test('Failure', () => {
   const error = 500;
   const state = new Failure(error);
-  expect(state).toBeInstanceOf(Failure);
-  expect(state.kind).toEqual('Failure');
-  expect(state.error).toEqual(error);
-  expect(isFailure(state)).toBeTruthy();
-  expect(isFailure(new Initialized())).toBeFalsy();
+  assert.ok(state instanceof Failure);
+  assert.equal(state.kind, 'Failure');
+  assert.equal(state.error, error);
+  assert.ok(isFailure(state));
+  assert.ok(!isFailure(new Initialized()));
 });
 
 test('Failure without error', () => {
-  expect(() => new Failure()).toThrow('Parameter "error" is required');
-  expect(() => new Failure(null)).toThrow('Parameter "error" is required');
-  expect(() => new Failure(undefined)).toThrow('Parameter "error" is required');
+  // @ts-expect-error error is required
+  assert.throws(() => new Failure(), /Parameter "error" is required/);
+  assert.throws(() => new Failure(null), /Parameter "error" is required/);
+  assert.throws(() => new Failure(undefined), /Parameter "error" is required/);
 });
 
 test('fold initialized', () => {
-  const initializedMock = jest.fn();
-  const pendingMock = jest.fn();
-  const successMock = jest.fn();
-  const failureMock = jest.fn();
-  const view = fold(initializedMock, pendingMock, failureMock, successMock);
+  const { initializedMock, pendingMock, successMock, failureMock, view } =
+    foldMocks();
 
   view(new Initialized());
-  expect(initializedMock).toHaveBeenCalledTimes(1);
-  expect(initializedMock).toHaveBeenCalledWith();
-  expect(pendingMock).not.toHaveBeenCalled();
-  expect(successMock).not.toHaveBeenCalled();
-  expect(failureMock).not.toHaveBeenCalled();
+  assert.equal(initializedMock.mock.callCount(), 1);
+  assert.deepEqual(initializedMock.mock.calls[0].arguments, []);
+  assert.equal(pendingMock.mock.callCount(), 0);
+  assert.equal(successMock.mock.callCount(), 0);
+  assert.equal(failureMock.mock.callCount(), 0);
 });
 
 test('fold pending', () => {
-  const initializedMock = jest.fn();
-  const pendingMock = jest.fn();
-  const successMock = jest.fn();
-  const failureMock = jest.fn();
-  const view = fold(initializedMock, pendingMock, failureMock, successMock);
+  const { initializedMock, pendingMock, successMock, failureMock, view } =
+    foldMocks();
 
   view(new Pending());
-  expect(initializedMock).not.toHaveBeenCalled();
-  expect(pendingMock).toHaveBeenCalledTimes(1);
-  expect(pendingMock).toHaveBeenCalledWith();
-  expect(successMock).not.toHaveBeenCalled();
-  expect(failureMock).not.toHaveBeenCalled();
+  assert.equal(initializedMock.mock.callCount(), 0);
+  assert.equal(pendingMock.mock.callCount(), 1);
+  assert.deepEqual(pendingMock.mock.calls[0].arguments, []);
+  assert.equal(successMock.mock.callCount(), 0);
+  assert.equal(failureMock.mock.callCount(), 0);
 });
 
 test('fold success', () => {
-  const initializedMock = jest.fn();
-  const pendingMock = jest.fn();
-  const successMock = jest.fn();
-  const failureMock = jest.fn();
-  const view = fold(initializedMock, pendingMock, failureMock, successMock);
+  const { initializedMock, pendingMock, successMock, failureMock, view } =
+    foldMocks();
 
   const data = { apple: 'sauce' };
   view(new Success(data));
-  expect(initializedMock).not.toHaveBeenCalled();
-  expect(pendingMock).not.toHaveBeenCalled();
-  expect(successMock).toHaveBeenCalledTimes(1);
-  expect(successMock).toHaveBeenCalledWith(data);
-  expect(failureMock).not.toHaveBeenCalled();
+  assert.equal(initializedMock.mock.callCount(), 0);
+  assert.equal(pendingMock.mock.callCount(), 0);
+  assert.equal(successMock.mock.callCount(), 1);
+  assert.deepEqual(successMock.mock.calls[0].arguments, [data]);
+  assert.equal(failureMock.mock.callCount(), 0);
 });
 
 test('fold failure', () => {
-  const initializedMock = jest.fn();
-  const pendingMock = jest.fn();
-  const successMock = jest.fn();
-  const failureMock = jest.fn();
-  const view = fold(initializedMock, pendingMock, failureMock, successMock);
+  const { initializedMock, pendingMock, successMock, failureMock, view } =
+    foldMocks();
 
   const error = 500;
   view(new Failure(error));
-  expect(initializedMock).not.toHaveBeenCalled();
-  expect(pendingMock).not.toHaveBeenCalled();
-  expect(successMock).not.toHaveBeenCalled();
-  expect(failureMock).toHaveBeenCalledTimes(1);
-  expect(failureMock).toHaveBeenCalledWith(error);
+  assert.equal(initializedMock.mock.callCount(), 0);
+  assert.equal(pendingMock.mock.callCount(), 0);
+  assert.equal(successMock.mock.callCount(), 0);
+  assert.equal(failureMock.mock.callCount(), 1);
+  assert.deepEqual(failureMock.mock.calls[0].arguments, [error]);
 });
 
 test('fold unknown', () => {
-  const otherMock = jest.fn();
-  const initializedMock = jest.fn();
-  const pendingMock = jest.fn();
-  const successMock = jest.fn();
-  const failureMock = jest.fn();
-  const view = fold(initializedMock, pendingMock, failureMock, successMock);
+  const { view } = foldMocks();
 
-  expect(() => view(otherMock)).toThrow('Unknown RemoteData state:');
+  // @ts-expect-error not a RemoteData state
+  assert.throws(() => view(mock.fn()), /Unknown RemoteData state:/);
 });
