@@ -9,14 +9,13 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "format": "prettier . --write",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "lint:eslint": "eslint src",
-    "lint:prettier": "prettier . --check",
-    "lint": "npm run lint:eslint && npm run lint:prettier",
+    "lint": "npm run lint:eslint && npm run format:check",
     "pkg-ok": "pkg-ok",
     "prepare": "npm run build",
     "prepublishOnly": "npm run pkg-ok",
-    "prettier": "prettier . --check",
     "test": "jest"
   },
   "repository": {
@@ -80,9 +79,5 @@
       "json",
       "node"
     ]
-  },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "all"
   }
 }
