@@ -1,7 +1,6 @@
 [![Version Status](https://img.shields.io/npm/v/@abraham/remotedata.svg?style=flat&label=version&colorB=4bc524)](https://npmjs.com/package/@abraham/remotedata)
 [![Build Status](https://github.com/abraham/remotedata/workflows/Index/badge.svg)](https://github.com/abraham/remotedata/actions)
 [![npm bundle size (minified + gzip)](https://img.shields.io/bundlephobia/minzip/@abraham/remotedata.svg?style=flat&colorB=4bc524)](https://bundlephobia.com/result?p=@abraham/remotedata)
-[![Coverage Status](https://coveralls.io/repos/github/abraham/remotedata/badge.svg?branch=master)](https://coveralls.io/github/abraham/remotedata?branch=master)
 
 # RemoteData
 
