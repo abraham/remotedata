@@ -4,9 +4,18 @@
   "description": "Lightweight TypeScript RemoteData implementation",
   "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src/index.ts"
+  ],
+  "sideEffects": false,
   "scripts": {
     "build": "tsc",
     "format": "prettier --write .",
@@ -16,7 +25,8 @@
     "pkg-ok": "pkg-ok",
     "prepare": "npm run build",
     "prepublishOnly": "npm run pkg-ok",
-    "test": "npm run build && node --test"
+    "test": "npm run build && node --test",
+    "typecheck": "tsc -p tsconfig.lint.json"
   },
   "repository": {
     "type": "git",
@@ -39,14 +49,12 @@
     "node": ">=22"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.0.0",
     "@eslint/js": "^10.0.1",
     "@types/node": "^22.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.0.0",
-    "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^10.2.1",
-    "pkg-ok": "^4.0.0",
+    "pkg-ok": "^5.0.0",
     "prettier": "3.9.10",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1"
   }
 }

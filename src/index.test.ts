@@ -88,7 +88,7 @@ test('fold initialized', () => {
 
   view(new Initialized());
   assert.equal(initializedMock.mock.callCount(), 1);
-  assert.deepEqual(initializedMock.mock.calls[0].arguments, []);
+  assert.deepEqual(initializedMock.mock.calls[0]?.arguments, []);
   assert.equal(pendingMock.mock.callCount(), 0);
   assert.equal(successMock.mock.callCount(), 0);
   assert.equal(failureMock.mock.callCount(), 0);
@@ -101,7 +101,7 @@ test('fold pending', () => {
   view(new Pending());
   assert.equal(initializedMock.mock.callCount(), 0);
   assert.equal(pendingMock.mock.callCount(), 1);
-  assert.deepEqual(pendingMock.mock.calls[0].arguments, []);
+  assert.deepEqual(pendingMock.mock.calls[0]?.arguments, []);
   assert.equal(successMock.mock.callCount(), 0);
   assert.equal(failureMock.mock.callCount(), 0);
 });
@@ -115,7 +115,7 @@ test('fold success', () => {
   assert.equal(initializedMock.mock.callCount(), 0);
   assert.equal(pendingMock.mock.callCount(), 0);
   assert.equal(successMock.mock.callCount(), 1);
-  assert.deepEqual(successMock.mock.calls[0].arguments, [data]);
+  assert.deepEqual(successMock.mock.calls[0]?.arguments, [data]);
   assert.equal(failureMock.mock.callCount(), 0);
 });
 
@@ -129,7 +129,7 @@ test('fold failure', () => {
   assert.equal(pendingMock.mock.callCount(), 0);
   assert.equal(successMock.mock.callCount(), 0);
   assert.equal(failureMock.mock.callCount(), 1);
-  assert.deepEqual(failureMock.mock.calls[0].arguments, [error]);
+  assert.deepEqual(failureMock.mock.calls[0]?.arguments, [error]);
 });
 
 test('fold unknown', () => {
