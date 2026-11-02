@@ -11,7 +11,7 @@ import {
   Kinds,
   Pending,
   Success,
-} from '../dist/index.js';
+} from './index.ts';
 
 function foldMocks() {
   const initializedMock = mock.fn();
@@ -23,15 +23,12 @@ function foldMocks() {
 }
 
 test('Kinds', () => {
-  assert.deepEqual(
-    { ...Kinds },
-    {
-      Failure: 'Failure',
-      Initialized: 'Initialized',
-      Pending: 'Pending',
-      Success: 'Success',
-    },
-  );
+  assert.deepEqual(Kinds, {
+    Failure: 'Failure',
+    Initialized: 'Initialized',
+    Pending: 'Pending',
+    Success: 'Success',
+  });
 });
 
 test('Initialized', () => {
@@ -58,11 +55,9 @@ test('Success', () => {
   assert.ok(!isSuccess(new Initialized()));
 });
 
-test('Success without data', () => {
-  // @ts-expect-error data is required
-  assert.throws(() => new Success(), /Parameter "data" is required/);
-  assert.throws(() => new Success(null), /Parameter "data" is required/);
-  assert.throws(() => new Success(undefined), /Parameter "data" is required/);
+test('Success with empty data', () => {
+  assert.equal(new Success(undefined).data, undefined);
+  assert.equal(new Success(null).data, null);
 });
 
 test('Failure', () => {
@@ -75,11 +70,19 @@ test('Failure', () => {
   assert.ok(!isFailure(new Initialized()));
 });
 
-test('Failure without error', () => {
-  // @ts-expect-error error is required
-  assert.throws(() => new Failure(), /Parameter "error" is required/);
-  assert.throws(() => new Failure(null), /Parameter "error" is required/);
-  assert.throws(() => new Failure(undefined), /Parameter "error" is required/);
+test('Failure with empty error', () => {
+  assert.equal(new Failure(undefined).error, undefined);
+  assert.equal(new Failure(null).error, null);
+});
+
+test('type guards match plain objects by kind', () => {
+  assert.ok(isInitialized({ kind: 'Initialized' }));
+  assert.ok(isPending({ kind: 'Pending' }));
+  assert.ok(isFailure({ kind: 'Failure', error: 500 }));
+  assert.ok(isSuccess({ kind: 'Success', data: 1 }));
+  assert.ok(!isSuccess(null));
+  assert.ok(!isSuccess('Success'));
+  assert.ok(!isSuccess({}));
 });
 
 test('fold initialized', () => {
@@ -134,7 +137,7 @@ test('fold failure', () => {
 
 test('fold unknown', () => {
   const { view } = foldMocks();
+  const other = { kind: 'Other' } as unknown as Initialized;
 
-  // @ts-expect-error not a RemoteData state
-  assert.throws(() => view(mock.fn()), /Unknown RemoteData state:/);
+  assert.throws(() => view(other), /Unknown RemoteData state: Other/);
 });

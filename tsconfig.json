@@ -20,6 +20,7 @@
     "allowUnusedLabels": false,
     "isolatedDeclarations": true,
     "isolatedModules": true,
+    "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
