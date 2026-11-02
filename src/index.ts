@@ -2,47 +2,55 @@ class NeverError extends Error {
   override readonly name = 'NeverError';
 
   constructor(value: never) {
-    super(`Unknown RemoteData state: ${String(value)}`);
+    super(`Unknown RemoteData state: ${String(kindOf(value))}`);
   }
 }
 
-export type RemoteData<E, D> = Initialized | Pending | Failure<E> | Success<D>;
+/** The four states of a remote request: `E` is the failure type, `D` the success data type. */
+export type RemoteData<E = unknown, D = unknown> =
+  Initialized | Pending | Failure<E> | Success<D>;
 
-export enum Kinds {
-  Initialized = 'Initialized',
-  Pending = 'Pending',
-  Failure = 'Failure',
-  Success = 'Success',
-}
+/** The `kind` discriminant of each RemoteData state. */
+export const Kinds = {
+  Initialized: 'Initialized',
+  Pending: 'Pending',
+  Failure: 'Failure',
+  Success: 'Success',
+} as const;
 
+export type Kinds = (typeof Kinds)[keyof typeof Kinds];
+
+/** The request hasn't started. */
 export class Initialized {
-  readonly kind: Kinds.Initialized = Kinds.Initialized;
+  readonly kind: typeof Kinds.Initialized = Kinds.Initialized;
 }
 
+/** The request is in flight. */
 export class Pending {
-  readonly kind: Kinds.Pending = Kinds.Pending;
+  readonly kind: typeof Kinds.Pending = Kinds.Pending;
 }
 
-export class Failure<E> {
-  readonly kind: Kinds.Failure = Kinds.Failure;
+/** The request failed with `error`. */
+export class Failure<E = unknown> {
+  readonly kind: typeof Kinds.Failure = Kinds.Failure;
+  readonly error: E;
 
-  constructor(public error: E) {
-    if (error === null || error === undefined) {
-      throw new TypeError('Parameter "error" is required');
-    }
+  constructor(error: E) {
+    this.error = error;
   }
 }
 
-export class Success<D> {
-  readonly kind: Kinds.Success = Kinds.Success;
+/** The request succeeded with `data`. */
+export class Success<D = unknown> {
+  readonly kind: typeof Kinds.Success = Kinds.Success;
+  readonly data: D;
 
-  constructor(public data: D) {
-    if (data === null || data === undefined) {
-      throw new TypeError('Parameter "data" is required');
-    }
+  constructor(data: D) {
+    this.data = data;
   }
 }
 
+/** Returns a function that calls the callback matching a state's kind. */
 export function fold<T, E, D>(
   initialized: () => T,
   pending: () => T,
@@ -65,11 +73,21 @@ export function fold<T, E, D>(
   };
 }
 
+function kindOf(state: unknown): unknown {
+  return typeof state === 'object' && state !== null && 'kind' in state
+    ? state.kind
+    : undefined;
+}
+
+/** Whether `state` is Initialized. */
 export const isInitialized = (state: unknown): state is Initialized =>
-  state instanceof Initialized;
+  kindOf(state) === Kinds.Initialized;
+/** Whether `state` is Pending. */
 export const isPending = (state: unknown): state is Pending =>
-  state instanceof Pending;
-export const isFailure = <E>(state: unknown): state is Failure<E> =>
-  state instanceof Failure;
-export const isSuccess = <D>(state: unknown): state is Success<D> =>
-  state instanceof Success;
+  kindOf(state) === Kinds.Pending;
+/** Whether `state` is a Failure. */
+export const isFailure = <E = unknown>(state: unknown): state is Failure<E> =>
+  kindOf(state) === Kinds.Failure;
+/** Whether `state` is a Success. */
+export const isSuccess = <D = unknown>(state: unknown): state is Success<D> =>
+  kindOf(state) === Kinds.Success;
